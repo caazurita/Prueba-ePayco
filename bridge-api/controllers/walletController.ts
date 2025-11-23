@@ -36,6 +36,37 @@ class WalletController {
       next(error);
     }
   }
+
+  async getBalance(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { document, phone } = req.body;
+      const user = await service.getBalance({ document, phone });
+      return res.status(201).json({
+        success: true,
+        message: "Balance retrieved successfully",
+        code: 201,
+        data: [user],
+      });
+    } catch (error) {
+      if (error instanceof Error && error.message === "USER_NOT_FOUND") {
+        return res.status(404).json({
+          success: false,
+          message: "USER_NOT_FOUND",
+          code: "404",
+          data: [error.message],
+        });
+      }
+      if (error instanceof Error) {
+        return res.status(500).json({
+          success: false,
+          message: "ERROR_FETCHING_BALANCE",
+          code: "500",
+          data: [error.message],
+        });
+      }
+      next(error);
+    }
+  }
 }
 
 export default WalletController;

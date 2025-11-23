@@ -48,4 +48,41 @@ class WalletService
             return json_encode($data);
         }
     }
+    public function getBalance($document, $phone)
+    {
+        try {
+            $user = User::where('document', $document)
+                ->where('phone', $phone)
+                ->first();
+
+            if (!$user) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'USER_NOT_FOUND',
+                    'cod_error' => '404',
+                    'data' => '',
+                ]);
+            }
+
+            $balance = $user->balance;
+            $data = [
+                'success' => true,
+                'message' => 'balance retrieved successfully',
+                'cod_error' => '00',
+                'data' => [
+                    'document' => $document,
+                    'balance' => $balance,
+                ],
+            ];
+            return json_encode($data);
+        } catch (\Exception $e) {
+            $data = [
+                'success' => false,
+                'message_error' => 'ERROR_RETRIEVING_BALANCE',
+                'cod_error' => '500',
+                'data' => $e->getMessage()
+            ];
+            return json_encode($data);
+        }
+    }
 }

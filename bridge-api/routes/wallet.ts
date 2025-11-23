@@ -4,9 +4,12 @@ const router = Router();
 const controller = new WalletController();
 router.post(
   "/createUser",
-  //   passport.authenticate("jwt", { session: false }),
-  //   logMiddleware,
   controller.create
 );
+
+router.post(
+  "/balance",
+  controller.getBalance
+)
 
 export default router;

@@ -12,7 +12,9 @@ Route::get('/server/wallet', function () {
 
 Route::post('/server/wallet', function () {
     $wsdl = storage_path('wsdl/wallet.wsdl');
-    $server = new \SoapServer($wsdl);
+    $server = new \SoapServer($wsdl, [
+        'cache_wsdl' => WSDL_CACHE_NONE,
+    ]);
     $server->setClass(WalletService::class);
     $server->handle();
 });
