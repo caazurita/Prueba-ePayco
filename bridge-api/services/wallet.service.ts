@@ -61,6 +61,48 @@ class UserService {
       throw error;
     }
   }
+
+  async requestPayment(data: any) {
+    try {
+      const client = await soap.createClientAsync(this.client);
+      const [result] = await client.requestPaymentAsync(data);
+      const res = JSON.parse(result?.result);
+      const cod = res?.cod_error;
+      if (cod !== "00") {
+        if (cod === "404") {
+          throw new Error("USER_NOT_FOUND");
+        } else {
+          throw new Error("ERROR_REQUESTING_PAYMENT");
+        }
+      }
+      return res?.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async makePayment(data: any) {
+    try {
+      const client = await soap.createClientAsync(this.client);
+      const [result] = await client.makePaymentAsync(data);
+      const res = JSON.parse(result?.result);
+      const cod = res?.cod_error;
+      if (cod !== "00") {
+        if (cod === "404") {
+          throw new Error("TRANSACTION_NOT_FOUND");
+        } else if (cod === "402") {
+          throw new Error("INSUFFICIENT_FUNDS");
+        } else if (cod === "408") {
+          throw new Error("TRANSACTION_EXPIRED");
+        } else {
+          throw new Error("ERROR_MAKING_PAYMENT");
+        }
+      }
+      return res?.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default UserService;

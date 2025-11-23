@@ -17,4 +17,14 @@ router.post(
   controller.addCredit
 )
 
+router.post(
+  "/requestPayment",
+  controller.requestPayment
+)
+
+router.post(
+  "/makePayment",
+  controller.makePayment
+)
+
 export default router;

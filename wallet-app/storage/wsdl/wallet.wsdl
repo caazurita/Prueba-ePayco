@@ -38,6 +38,23 @@
         <part name="result" type="xsd:string"/>
     </message>
 
+    <message name="requestPaymentRequest">
+        <part name="document" type="xsd:string"/>
+        <part name="phone" type="xsd:string"/>
+        <part name="amount" type="xsd:float"/>
+    </message>
+    <message name="requestPaymentResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+
+    <message name="makePaymentRequest">
+        <part name="sessionId" type="xsd:string"/>
+        <part name="token" type="xsd:string"/>
+    </message>
+    <message name="makePaymentResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+
     <!-- PortType -->
     <portType name="WalletPortType">
         <operation name="createUser">
@@ -51,6 +68,14 @@
         <operation name="addCredit">
             <input message="tns:addCreditRequest"/>
             <output message="tns:addCreditResponse"/>
+        </operation>
+        <operation name="requestPayment">
+            <input message="tns:requestPaymentRequest"/>
+            <output message="tns:requestPaymentResponse"/>
+        </operation>
+        <operation name="makePayment">
+            <input message="tns:makePaymentRequest"/>
+            <output message="tns:makePaymentResponse"/>
         </operation>
     </portType>
 
@@ -70,6 +95,16 @@
         </operation>
         <operation name="addCredit">
             <soap:operation soapAction="addCredit"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="requestPayment">
+            <soap:operation soapAction="requestPayment"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="makePayment">
+            <soap:operation soapAction="makePayment"/>
             <input><soap:body use="literal"/></input>
             <output><soap:body use="literal"/></output>
         </operation>
