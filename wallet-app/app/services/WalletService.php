@@ -85,4 +85,44 @@ class WalletService
             return json_encode($data);
         }
     }
+
+    public function addCredit($document, $phone, $amount)
+    {
+        try {
+            $user = User::where('document', $document)
+                ->where('phone', $phone)
+                ->first();
+
+            if (!$user) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'USER_NOT_FOUND',
+                    'cod_error' => '404',
+                    'data' => '',
+                ]);
+            }
+
+            $user->balance += $amount;
+            $user->save();
+
+            $data = [
+                'success' => true,
+                'message' => 'credit added successfully',
+                'cod_error' => '00',
+                'data' => [
+                    'document' => $document,
+                    'new_balance' => $user->balance,
+                ],
+            ];
+            return json_encode($data);
+        } catch (\Exception $e) {
+            $data = [
+                'success' => false,
+                'message_error' => 'ERROR_ADDING_CREDIT',
+                'cod_error' => '500',
+                'data' => $e->getMessage()
+            ];
+            return json_encode($data);
+        }
+    }
 }

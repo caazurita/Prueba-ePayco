@@ -12,4 +12,9 @@ router.post(
   controller.getBalance
 )
 
+router.post(
+  "/addCredit",
+  controller.addCredit
+)
+
 export default router;
