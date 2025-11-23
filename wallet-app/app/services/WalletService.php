@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Mail\SendTokenMail;
 use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class WalletService
@@ -147,6 +149,8 @@ class WalletService
 
             $token = random_int(100000, 999999);
             $sessionId = Str::uuid()->toString();
+
+            Mail::to($user->email)->send(new SendTokenMail($token));
 
             Transaction::create([
                 'user_id' => $user->id,
