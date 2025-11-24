@@ -4,7 +4,7 @@
 ## Este proyecto consiste en un servicio de billetera virtual que permite:
 - Registro Clientes.
 - Recarga Billetera.
-- Pagar.
+- Solicitar Pago + envío de token por correo.
 - Confirmar Pago.
 - Consultar Saldo.
 
@@ -31,6 +31,58 @@
 | POST   | `/api/server/addCredit`       | Agregar credito              | phone, document, amount |
 | POST   | `/api/server/requestPayment`  | Solicitar pago               | phone, document, amount|
 | POST   | `/api/server/makePayment`     | Realizar pago                | sessionId, token|
+
+
+**Ejemplo request (Crear Usuario) REST:**
+```json
+{
+    "name": "Carlos Alvarado Z.",
+    "email": "miCorreo@demo.com",
+    "phone": "78987654",
+    "document": "6765432"
+}
+```
+**Ejemplo Respuesta**
+
+```json
+{
+    "success": true,
+    "message": "User created successfully",
+    "code": "201",
+    "data": [
+        {
+            "name": "Carlos Alvarado Z.",
+            "email": "miCorreo@demo.com",
+            "phone": "78987654",
+            "document": "6765432"
+        }
+    ]
+}
+```
+
+**Ejemplo request (Solicitar Pago) REST:**
+```json
+{
+    "phone": "69023406",
+    "document": "5919925",
+    "amount": 100.5
+}
+```
+**Ejemplo Respuesta**
+
+```json
+{
+    "success": true,
+    "message": "Payment request created successfully",
+    "code": "200",
+    "data": [
+        {
+            "document": "5919925",
+            "session_id": "0d3894ea-e85c-4d73-b26c-326ab580b36b"
+        }
+    ]
+}
+```
 
 **Ejemplo request (Realizar Pago) REST:**
 ```json
@@ -88,5 +140,58 @@
 </SOAP-ENV:Envelope>
 ```
 
-**Notas**
+**Ejemplo request (Solicitar Pago) SOAP:**
+```xml
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <requestPayment xmlns="http://localhost/soap">
+            <phone>69023406</phone>
+            <document>5919925</document>
+            <amount>100</amount>
+        </requestPayment>
+    </soap:Body>
+</soap:Envelope>
+
+```
+
+**Ejemplo Respuesta**
+```xml
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Body>
+        <SOAP-ENV:requestPaymentResponse>
+            <result>{"success":true,"message":"payment request created
+                successfully","cod_error":"00","data":{"document":"5919925","session_id":"c25aefa2-f396-47d8-8bfb-1f71dd66afe5"}}
+            </result>
+        </SOAP-ENV:requestPaymentResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+```
+
+**Ejemplo request (Realizar Pago) SOAP:**
+```xml
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <makePayment xmlns="http://localhost/soap">
+            <sessionId>6ba5377a-7095-4f22-ac8f-99601ac0fb03</sessionId>
+            <token>984181</token>
+        </makePayment>
+    </soap:Body>
+</soap:Envelope>
+
+
+```
+
+**Ejemplo Respuesta**
+```xml
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Body>
+        <SOAP-ENV:makePaymentResponse>
+            <result>{"success":true,"message":"Payment processed
+                successfully","cod_error":"00","data":{"document":"5919925","new_balance":599}}</result>
+        </SOAP-ENV:makePaymentResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+```
+
+## Notas
 Existe algunas capturas en /asset 
