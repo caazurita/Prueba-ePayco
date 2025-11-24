@@ -33,12 +33,15 @@
 | POST   | `/api/server/makePayment`     | Realizar pago                | sessionId, token|
 
 **Ejemplo request (Realizar Pago) REST:**
+```json
 {
     "sessionId": "8970bbbe-904f-4263-84c4-6fff4956ce36",
     "token": "522389"
 }
-
+```
 **Ejemplo Respuesta**
+
+```json
 {
     "success": false,
     "message": "TRANSACTION_NOT_FOUND",
@@ -47,19 +50,21 @@
         "TRANSACTION_NOT_FOUND"
     ]
 }
+```
 
 ### SOAP (Laravel)
 
 | Método | Ruta                          | Descripción                  | Parámetros |
 |--------|-------------------------------|------------------------------|------------|
 | POST   | `/api/server/wallet`          | Crear usuario                | name, document, email, phone |
-                                         | Consultar saldo              | phone, document |
-                                         | Agregar credito              | phone, document, amount |
-                                         | Solicitar pago               | phone, document, amount|
-                                         | Realizar pago                | sessionId, token|
+| POST   |                               | Consultar saldo              | phone, document |
+| POST   |                               | Agregar credito              | phone, document, amount |
+| POST   |                               | Solicitar pago               | phone, document, amount|
+| POST   |                               | Realizar pago                | sessionId, token|
+
 
 **Ejemplo request (crear usuario) SOAP:**
-
+```xml
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
     <createUser xmlns="http://localhost/soap">
@@ -70,8 +75,10 @@
     </createUser>
   </soap:Body>
 </soap:Envelope>
+```
 
 **Ejemplo Respuesta**
+```xml
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
     <SOAP-ENV:Body>
         <SOAP-ENV:createUserResponse>
@@ -79,7 +86,7 @@
         </SOAP-ENV:createUserResponse>
     </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
-
+```
 
 **Notas**
 Existe algunas capturas en /asset 
